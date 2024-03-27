@@ -19,6 +19,7 @@ init() {
 }
 
 run() {
+  kubectl create namespace eclipse-che
   kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Secret
