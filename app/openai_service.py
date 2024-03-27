@@ -1,5 +1,6 @@
 import os
 from time import sleep
+
 from openai import OpenAI
 
 client = OpenAI(
@@ -38,30 +39,35 @@ def get_run_status(thread_id, run_id):
     return client.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run_id)
 
 
-def format_message(raw_message):
+def format_request_message(message):
     if message == "":
         return "Provide initial devfile."
-
-    try:
-        yaml = ruamel.yaml.YAML()
-        yaml.load(raw_message)
-        return """```yaml
-        {}
-        ```""".format(raw_message)
-    except ScannerError:
-        return raw_message
+    elif "schemaVersion" in message:
+        return """```yaml\n{}\n```""".format(message)
+    else:
+        return message
 
 
-def chat(message):
+def format_response_message(message):
+    if message == "NOT A DEVFILE":
+        return ""
+    return message.strip("```yaml").strip()
+
+
+def chat(request_message):
+    formatted_request_message = format_request_message(request_message)
+    print(formatted_request_message)
+
     thread = create_thread()
-    send_message(thread.id, format_message(str(message, encoding='utf-8')))
+    send_message(thread.id, formatted_request_message)
     run = run_assistant(thread.id, os.getenv('ASSISTANT_ID'))
     while run.status != "completed":
         run.status = get_run_status(thread.id, run.id).status
-        print("Status:", run.status)
+        print("Status: ", run.status)
         sleep(1)
 
     response = get_message(thread.id)
     delete_thread(thread.id)
 
-    return response.content[0].text.value
+    response_message = response.content[0].text.value
+    return format_response_message(response_message)

@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/', methods=['POST'])
 def home():
     if request.method == 'POST':
-        return chat(request.data)
+        return chat(request.json["message"])
 
 
 if __name__ == '__main__':
