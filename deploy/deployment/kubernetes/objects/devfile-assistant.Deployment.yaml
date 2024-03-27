@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/part-of: devfile-assistant
+  name: devfile-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: devfile-assistant
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: devfile-assistant
+    spec:
+      containers:
+      - name: devfile-assistant
+        env:
+        - name: ASSISTANT_ID
+          valueFrom:
+            secretKeyRef:
+              name: devfile-assistant
+              key: assistant-id
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: devfile-assistant
+              key: openai-key
+        image: quay.io/che-incubator/devfile-development-assistant:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+          name: server
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 50m
+            memory: 128Mi
+          requests:
+            cpu: 20m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1724
+        runAsUser: 1724
+      serviceAccountName: devfile-assistant
