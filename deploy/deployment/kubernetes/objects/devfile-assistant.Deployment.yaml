@@ -19,11 +19,6 @@ spec:
       containers:
       - name: devfile-assistant
         env:
-        - name: ASSISTANT_ID
-          valueFrom:
-            secretKeyRef:
-              name: devfile-assistant
-              key: assistant-id
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
@@ -53,7 +48,4 @@ spec:
       hostNetwork: false
       hostPID: false
       restartPolicy: Always
-      securityContext:
-        fsGroup: 1724
-        runAsUser: 1724
       serviceAccountName: devfile-assistant

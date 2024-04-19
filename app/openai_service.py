@@ -7,6 +7,18 @@ client = OpenAI(
     api_key=os.getenv('OPENAI_API_KEY'),
 )
 
+MODEL = "gpt-4-turbo"
+INSTRUCTIONS = "../resources/assistant-instructions.txt"
+ASSISTANT_ID = os.getenv('OPENAI_ASSISTANT_ID')
+
+if ASSISTANT_ID is None:
+    assistant = client.beta.assistants.create(
+        name="Devfile Assistant",
+        instructions=open(INSTRUCTIONS, 'r').read(),
+        model=MODEL
+    )
+    ASSISTANT_ID = assistant.id
+
 
 def create_thread():
     return client.beta.threads.create()
@@ -41,26 +53,18 @@ def get_run_status(thread_id, run_id):
 
 def format_request_message(message):
     if message == "":
-        return "Provide initial devfile."
-    elif "schemaVersion" in message:
-        return """```yaml\n{}\n```""".format(message)
+        return "Provide a default devfile."
     else:
         return message
 
 
-def format_response_message(message):
-    if message == "NOT A DEVFILE":
-        return ""
-    return message.strip("```yaml").strip()
-
-
 def chat(request_message):
     formatted_request_message = format_request_message(request_message)
-    print(formatted_request_message)
 
     thread = create_thread()
+
     send_message(thread.id, formatted_request_message)
-    run = run_assistant(thread.id, os.getenv('ASSISTANT_ID'))
+    run = run_assistant(thread.id, ASSISTANT_ID)
     while run.status != "completed":
         run.status = get_run_status(thread.id, run.id).status
         print("Status: ", run.status)
@@ -69,5 +73,4 @@ def chat(request_message):
     response = get_message(thread.id)
     delete_thread(thread.id)
 
-    response_message = response.content[0].text.value
-    return format_response_message(response_message)
+    return response.content[0].text.value
