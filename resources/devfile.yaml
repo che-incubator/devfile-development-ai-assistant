@@ -1,0 +1,238 @@
+schemaVersion: string
+attributes: map<string,object>
+commands:
+  - id: string
+    attributes: map<string,object>
+    apply:
+      component: string
+      group:
+        kind: build | run | test | debug | deploy
+        isDefault: boolean
+      label: string
+  - id: string
+    attributes: map<string,object>
+    exec:
+      commandLine: string
+      component: string
+      env:
+        - name: string
+          value: string
+      group:
+        kind: build | run | test | debug | deploy
+        isDefault: boolean
+      hotReloadCapable: boolean
+      label: string
+      workingDir: string
+  - id: string
+    attributes: map<string,object>
+    composite:
+      commands: array<string>
+      group:
+        kind: build | run | test | debug | deploy
+        isDefault: boolean
+      label: string
+      parallel: boolean
+components:
+  - name: string
+    attributes: map<string,object>
+    container:
+      image: ABCDEFGHIJKLMNOPQRSTUVWXYZABC
+      annotation:
+        deployment: map<string,string>
+        service: map<string,string>
+      args: array<string>
+      command: array<string>
+      cpuLimit: string
+      cpuRequest: string
+      dedicatedPod: boolean
+      memoryLimit: string
+      memoryRequest: string
+      mountSources: boolean
+      sourceMapping: string
+      endpoints:
+        - name: string
+          targetPort: integer
+          annotation: map<string,string>
+          attributes: map<string,object>
+          exposure: public | internal | none
+          path: string
+          protocol: http | https | ws | wss | tcp | udp
+          secure: boolean
+      env:
+        - name: string
+          value: string
+      volumeMounts:
+        - name: string
+          path: string
+  - name: string
+    attributes: map<string,object>
+    image:
+      imageName: string
+      autoBuild: boolean
+      dockerfile:
+        args: array<string>
+        buildContext: string
+        rootRequired: boolean
+        uri: string
+  - name: string
+    attributes: map<string,object>
+    image:
+      imageName: string
+      autoBuild: boolean
+      dockerfile:
+        args: array<string>
+        buildContext: string
+        rootRequired: boolean
+        devfileRegistry:
+          id: string
+          registryUrl: string
+  - name: string
+    attributes: map<string,object>
+    image:
+      imageName: string
+      autoBuild: boolean
+      dockerfile:
+        args: array<string>
+        buildContext: string
+        rootRequired: boolean
+        git:
+          checkoutFrom:
+            remote: string
+            revision: string
+          fileLocation: string
+          remotes: map<string,string>
+  - name: string
+    attributes: map<string,object>
+    volume:
+      ephemeral: boolean
+      size: string
+  - name: string
+    attributes: map<string,object>
+    kubernetes:
+      deployByDefault: boolean
+      endpoints:
+        - name: string
+          targetPort: integer
+          annotation: map<string,string>
+          attributes: map<string,object>
+          exposure: public | internal | none
+          path: string
+          protocol: http | https | ws | wss | tcp | udp
+          secure: boolean
+      inlined: string
+  - name: string
+    attributes: map<string,object>
+    kubernetes:
+      deployByDefault: boolean
+      endpoints:
+        - name: string
+          targetPort: integer
+          annotation: map<string,string>
+          attributes: map<string,object>
+          exposure: public | internal | none
+          path: string
+          protocol: http | https | ws | wss | tcp | udp
+          secure: boolean
+      uri: string
+  - name: string
+    attributes: map<string,object>
+    openshift:
+      deployByDefault: boolean
+      endpoints:
+        - name: string
+          targetPort: integer
+          annotation: map<string,string>
+          attributes: map<string,object>
+          exposure: public | internal | none
+          path: string
+          protocol: http | https | ws | wss | tcp | udp
+          secure: boolean
+      inlined: string
+  - name: string
+    attributes: map<string,object>
+    openshift:
+      deployByDefault: boolean
+      endpoints:
+        - name: string
+          targetPort: integer
+          annotation: map<string,string>
+          attributes: map<string,object>
+          exposure: public | internal | none
+          path: string
+          protocol: http | https | ws | wss | tcp | udp
+          secure: boolean
+      uri: string
+dependentProjects:
+  - name: string
+    attributes: map<string,object>
+    clonePath: string
+    git:
+      remotes: map<string,object>
+      checkoutFrom:
+        remote: string
+        revision: string
+  - name: string
+    attributes: map<string,object>
+    clonePath: string
+    zip:
+      location: string
+events:
+  postStart: array<string>
+  postStop: array<string>
+  preStart: array<string>
+  preStop: array<string>
+metadata:
+  architectures: array<string>
+  attributes: map<string, object>
+  description: string
+  displayName: string
+  globalMemoryLimit: string
+  icon: string
+  language: string
+  name: string
+  projectType: string
+  provider: string
+  supportUrl: string
+  tags: array<string>
+  version: string
+  website: string
+parent:
+  attributes: map<string, object>
+  id: string
+  kubernetes:
+    name: string
+    namespace: string
+  registryUrl: string
+  uri: string
+  version: string
+projects:
+  - name: string
+    attributes: map<string,object>
+    clonePath: string
+    git:
+      remotes: map<string,object>
+      checkoutFrom:
+        remote: string
+        revision: string
+  - name: string
+    attributes: map<string,object>
+    clonePath: string
+    zip:
+      location: string
+starterProjects:
+  - name: string
+    attributes: map<string,object>
+    description: string
+    subDir: string
+    git:
+      remotes: map<string,object>
+      checkoutFrom:
+        remote: string
+        revision: string
+  - name: string
+    attributes: map<string,object>
+    description: string
+    subDir: string
+    zip:
+      location: string
+variables: map<string,string>
